@@ -68,55 +68,26 @@ class FacebookTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \Throwable
      */
-    public function testSettingAnInvalidHttpClientHandlerThrows()
+    public function testSettingAnInvalidHttpClientTypeThrows()
     {
         $config = array_merge($this->config, [
-            'http_client_handler' => 'foo_handler',
+            'http_client' => 'foo_client',
         ]);
         new Facebook($config);
     }
 
-    public function testCurlHttpClientHandlerCanBeForced()
-    {
-        if (!extension_loaded('curl')) {
-            $this->markTestSkipped('cURL must be installed to test cURL client handler.');
-        }
-        $config = array_merge($this->config, [
-            'http_client_handler' => 'curl'
-        ]);
-        $fb = new Facebook($config);
-        $this->assertInstanceOf(
-            'Facebook\HttpClients\FacebookCurlHttpClient',
-            $fb->getClient()->getHttpClientHandler()
-        );
-    }
-
-    public function testStreamHttpClientHandlerCanBeForced()
+    /**
+     * @expectedException \Throwable
+     */
+    public function testSettingAnInvalidHttpClientClassThrows()
     {
         $config = array_merge($this->config, [
-            'http_client_handler' => 'stream'
+            'http_client' => new \stdClass(),
         ]);
-        $fb = new Facebook($config);
-        $this->assertInstanceOf(
-            'Facebook\HttpClients\FacebookStreamHttpClient',
-            $fb->getClient()->getHttpClientHandler()
-        );
+        new Facebook($config);
     }
-
-    public function testGuzzleHttpClientHandlerCanBeForced()
-    {
-        $config = array_merge($this->config, [
-            'http_client_handler' => 'guzzle'
-        ]);
-        $fb = new Facebook($config);
-        $this->assertInstanceOf(
-            'Facebook\HttpClients\FacebookGuzzleHttpClient',
-            $fb->getClient()->getHttpClientHandler()
-        );
-    }
-
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -214,7 +185,7 @@ class FacebookTest extends \PHPUnit_Framework_TestCase
     public function testCanInjectCustomHandlers()
     {
         $config = array_merge($this->config, [
-            'http_client_handler' => new FooClientInterface(),
+            'http_client' => new FooClientInterface(),
             'persistent_data_handler' => new FooPersistentDataInterface(),
             'url_detection_handler' => new FooUrlDetectionInterface(),
         ]);
@@ -222,7 +193,7 @@ class FacebookTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(
             'Facebook\Tests\Fixtures\FooClientInterface',
-            $fb->getClient()->getHttpClientHandler()
+            $fb->getClient()->getHttpClient()
         );
         $this->assertInstanceOf(
             'Facebook\Tests\Fixtures\FooPersistentDataInterface',
@@ -237,7 +208,7 @@ class FacebookTest extends \PHPUnit_Framework_TestCase
     public function testPaginationReturnsProperResponse()
     {
         $config = array_merge($this->config, [
-            'http_client_handler' => new FooClientInterface(),
+            'http_client' => new FooClientInterface(),
         ]);
         $fb = new Facebook($config);
 
@@ -272,7 +243,7 @@ class FacebookTest extends \PHPUnit_Framework_TestCase
     public function testCanGetSuccessfulTransferWithMaxTries()
     {
         $config = array_merge($this->config, [
-          'http_client_handler' => new FakeGraphApiForResumableUpload(),
+          'http_client' => new FakeGraphApiForResumableUpload(),
         ]);
         $fb = new Facebook($config);
         $response = $fb->uploadVideo('me', __DIR__.'/foo.txt', [], 'foo-token', 3);
@@ -291,7 +262,7 @@ class FacebookTest extends \PHPUnit_Framework_TestCase
         $client->failOnTransfer();
 
         $config = array_merge($this->config, [
-          'http_client_handler' => $client,
+          'http_client' => $client,
         ]);
         $fb = new Facebook($config);
         $fb->uploadVideo('4', __DIR__.'/foo.txt', [], 'foo-token', 3);

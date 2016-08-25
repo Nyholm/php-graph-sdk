@@ -23,16 +23,18 @@
  */
 namespace Facebook\Tests\Fixtures;
 
-use Facebook\Http\GraphRawResponse;
-use Facebook\HttpClients\FacebookHttpClientInterface;
+use GuzzleHttp\Psr7\Response;
+use Http\Client\HttpClient;
+use Psr\Http\Message\RequestInterface;
 
-class FooClientInterface implements FacebookHttpClientInterface
+class FooClientInterface implements HttpClient
 {
-    public function send($url, $method, $body, array $headers, $timeOut)
+    public function sendRequest(RequestInterface $request)
     {
-        return new GraphRawResponse(
-            "HTTP/1.1 1337 OK\r\nDate: Mon, 19 May 2014 18:37:17 GMT",
-            '{"data":[{"id":"123","name":"Foo"},{"id":"1337","name":"Bar"}]}'
+        return new Response(1337, ['Date' => 'Mon, 19 May 2014 18:37:17 GMT'],
+            '{"data":[{"id":"123","name":"Foo"},{"id":"1337","name":"Bar"}]}',
+            '1.1',
+            'OK'
         );
     }
 }
