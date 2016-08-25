@@ -32,7 +32,6 @@ use Facebook\FileUpload\FacebookVideo;
 use Facebook\GraphNodes\GraphEdge;
 use Facebook\Url\UrlDetectionInterface;
 use Facebook\Url\FacebookUrlDetectionHandler;
-use Facebook\HttpClients\HttpClientsFactory;
 use Facebook\PersistentData\PersistentDataFactory;
 use Facebook\PersistentData\PersistentDataInterface;
 use Facebook\Helpers\FacebookCanvasHelper;
@@ -117,7 +116,7 @@ class Facebook
             'app_secret' => getenv(static::APP_SECRET_ENV_NAME),
             'default_graph_version' => null,
             'enable_beta_mode' => false,
-            'http_client_handler' => null,
+            'http_client' => null,
             'persistent_data_handler' => null,
             'url_detection_handler' => null,
         ], $config);
@@ -134,7 +133,7 @@ class Facebook
 
         $this->app = new FacebookApp($config['app_id'], $config['app_secret']);
         $this->client = new FacebookClient(
-            HttpClientsFactory::createHttpClient($config['http_client_handler']),
+            $config['http_client'],
             $config['enable_beta_mode']
         );
         $this->setUrlDetectionHandler($config['url_detection_handler'] ?: new FacebookUrlDetectionHandler());

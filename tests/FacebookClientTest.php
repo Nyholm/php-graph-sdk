@@ -72,21 +72,9 @@ class FacebookClientTest extends \PHPUnit_Framework_TestCase
     {
         $handler = new MyFooClientHandler();
         $client = new FacebookClient($handler);
-        $httpHandler = $client->getHttpClientHandler();
+        $httpHandler = $client->getHttpClient();
 
         $this->assertInstanceOf(MyFooClientHandler::class, $httpHandler);
-    }
-
-    public function testTheHttpClientWillFallbackToDefault()
-    {
-        $client = new FacebookClient();
-        $httpHandler = $client->getHttpClientHandler();
-
-        if (function_exists('curl_init')) {
-            $this->assertInstanceOf(FacebookCurlHttpClient::class, $httpHandler);
-        } else {
-            $this->assertInstanceOf(FacebookStreamHttpClient::class, $httpHandler);
-        }
     }
 
     public function testBetaModeCanBeDisabledOrEnabledViaConstructor()
@@ -279,18 +267,6 @@ class FacebookClientTest extends \PHPUnit_Framework_TestCase
             FacebookTestCredentials::$appSecret
         );
 
-        // Use default client
-        $client = null;
-
-        // Uncomment to enable curl implementation.
-        //$client = new FacebookCurlHttpClient();
-
-        // Uncomment to enable stream wrapper implementation.
-        //$client = new FacebookStreamHttpClient();
-
-        // Uncomment to enable Guzzle implementation.
-        //$client = new FacebookGuzzleHttpClient();
-
-        static::$testFacebookClient = new FacebookClient($client);
+        static::$testFacebookClient = new FacebookClient();
     }
 }
