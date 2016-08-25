@@ -8,6 +8,10 @@ Starting with version 5, the Facebook PHP SDK follows [SemVer](http://semver.org
 - 6.0.0 (Sometime in 2017)
   - Bumped PHP version requirement to 5.6 (#607)
   - Replace custom CSPRNG implementation with `paragonie/random_compat` (#644)
+  - We use an HTTP client abstraction called HTTPlug to give the user more control over *how* to send PSR7 messages. See updated installation instructions. 
+  - Removed option `http_client_handler`
+  - Added option `http_client` which should be an object implementing `\Http\Client\HttpClient`
+  - Removed functions `FacebookClient::setHttpClientHandler()` and `FacebookClient::getHttpClientHandler()` in favor for `FacebookClient::getHttpClient()` and `FacebookClient::setHttpClient()`.
 
 ## 5.x
 
