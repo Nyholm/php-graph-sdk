@@ -68,7 +68,7 @@ class FacebookTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Throwable
+     * @expectedException \InvalidArgumentException
      */
     public function testSettingAnInvalidHttpClientTypeThrows()
     {
@@ -79,7 +79,7 @@ class FacebookTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Throwable
+     * @expectedException \InvalidArgumentException
      */
     public function testSettingAnInvalidHttpClientClassThrows()
     {
