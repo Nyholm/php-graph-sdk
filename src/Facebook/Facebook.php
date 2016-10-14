@@ -39,6 +39,7 @@ use Facebook\Helpers\FacebookJavaScriptHelper;
 use Facebook\Helpers\FacebookPageTabHelper;
 use Facebook\Helpers\FacebookRedirectLoginHelper;
 use Facebook\Exceptions\FacebookSDKException;
+use Http\Client\HttpClient;
 
 /**
  * Class Facebook
@@ -126,6 +127,9 @@ class Facebook
         }
         if (!$config['app_secret']) {
             throw new FacebookSDKException('Required "app_secret" key not supplied in config and could not find fallback environment variable "' . static::APP_SECRET_ENV_NAME . '"');
+        }
+        if ($config['http_client'] !== null && !$config['http_client'] instanceof HttpClient) {
+            throw new \InvalidArgumentException('Required "http_client" key to be null or an instance of \Http\Client\HttpClient');
         }
         if (!$config['default_graph_version']) {
             throw new \InvalidArgumentException('Required "default_graph_version" key not supplied in config');

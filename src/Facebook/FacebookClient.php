@@ -193,8 +193,6 @@ class FacebookClient
 
         list($url, $method, $headers, $body) = $this->prepareRequestMessage($request);
 
-        // Should throw `FacebookSDKException` exception on HTTP client error.
-        // Don't catch to allow it to bubble up.
         $psr7Request = MessageFactoryDiscovery::find()->createRequest($method, $url, $headers, $body);
         $psr7Response = $this->httpClient->sendRequest($psr7Request);
 
