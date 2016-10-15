@@ -31,7 +31,9 @@ class MyFooBatchClientHandler implements HttpClient
 {
     public function sendRequest(RequestInterface $request)
     {
-        return new Response(200, ['Date' => 'Mon, 19 May 2014 18:37:17 GMT'],
+        return new Response(
+            200,
+            ['Date' => 'Mon, 19 May 2014 18:37:17 GMT'],
             '[{"code":"123","body":"Foo"},{"code":"1337","body":"Bar"}]'
         );
     }

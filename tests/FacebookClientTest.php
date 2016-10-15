@@ -75,6 +75,14 @@ class FacebookClientTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Facebook\Tests\Fixtures\MyFooClientHandler', $httpHandler);
     }
 
+    public function testTheHttpClientWillFallbackToDefault()
+    {
+        $client = new FacebookClient();
+        $httpHandler = $client->getHttpClient();
+
+        $this->assertInstanceOf('Http\Client\HttpClient', $httpHandler);
+    }
+
     public function testBetaModeCanBeDisabledOrEnabledViaConstructor()
     {
         $client = new FacebookClient(null, false);
