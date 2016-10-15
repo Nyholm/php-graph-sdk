@@ -19,7 +19,6 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 
 namespace Facebook\Tests\Fixtures;
@@ -59,14 +58,18 @@ class FakeGraphApiForResumableUpload implements HttpClient
     private function respondStart()
     {
         if ($this->respondWith == 'FAIL_ON_START') {
-            return new Response(500, ['Foo'=>'Bar'],
-                '{"error":{"message":"Error validating access token: Session has expired on Monday, ' .
-                '10-Aug-15 01:00:00 PDT. The current time is Monday, 10-Aug-15 01:14:23 PDT.",' .
+            return new Response(
+                500,
+                ['Foo' => 'Bar'],
+                '{"error":{"message":"Error validating access token: Session has expired on Monday, '.
+                '10-Aug-15 01:00:00 PDT. The current time is Monday, 10-Aug-15 01:14:23 PDT.",'.
                 '"type":"OAuthException","code":190,"error_subcode":463}}'
             );
         }
 
-        return new Response(200, ['Foo'=>'Bar'],
+        return new Response(
+            200,
+            ['Foo' => 'Bar'],
             '{"video_id":"1337","start_offset":"0","end_offset":"20","upload_session_id":"42"}'
         );
     }
@@ -74,8 +77,10 @@ class FakeGraphApiForResumableUpload implements HttpClient
     private function respondTransfer()
     {
         if ($this->respondWith == 'FAIL_ON_TRANSFER') {
-            return new Response(500, ['Foo'=>'Bar'],
-                '{"error":{"message":"There was a problem uploading your video. Please try uploading it again.",' .
+            return new Response(
+                500,
+                ['Foo' => 'Bar'],
+                '{"error":{"message":"There was a problem uploading your video. Please try uploading it again.",'.
                 '"type":"FacebookApiException","code":6000,"error_subcode":1363019}}'
             );
         }
@@ -94,11 +99,11 @@ class FakeGraphApiForResumableUpload implements HttpClient
 
         $this->transferCount++;
 
-        return new Response(200, ['Foo'=>'Bar'], json_encode($data));
+        return new Response(200, ['Foo' => 'Bar'], json_encode($data));
     }
 
     private function respondFinish()
     {
-        return new Response(500, ['Foo'=>'Bar'], '{"success":true}');
+        return new Response(500, ['Foo' => 'Bar'], '{"success":true}');
     }
 }

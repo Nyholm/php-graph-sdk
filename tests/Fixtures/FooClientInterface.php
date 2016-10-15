@@ -31,7 +31,9 @@ class FooClientInterface implements HttpClient
 {
     public function sendRequest(RequestInterface $request)
     {
-        return new Response(1337, ['Date' => 'Mon, 19 May 2014 18:37:17 GMT'],
+        return new Response(
+            1337,
+            ['Date' => 'Mon, 19 May 2014 18:37:17 GMT'],
             '{"data":[{"id":"123","name":"Foo"},{"id":"1337","name":"Bar"}]}',
             '1.1',
             'OK'

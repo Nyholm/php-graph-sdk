@@ -198,18 +198,24 @@ class FacebookClient
 
         static::$requestCount++;
 
-        $returnResponse = new FacebookResponse(
+        // Prepare headers from associative array to a single string for each header.
+        $responseHeaders = [];
+        foreach ($psr7Response->getHeaders() as $name => $values) {
+            $responseHeaders[] = sprintf('%s: %s', $name, implode(", ", $values));
+        }
+
+        $facebookResponse = new FacebookResponse(
             $request,
             $psr7Response->getBody(),
             $psr7Response->getStatusCode(),
-            $psr7Response->getHeaders()
+            $responseHeaders
         );
 
-        if ($returnResponse->isError()) {
-            throw $returnResponse->getThrownException();
+        if ($facebookResponse->isError()) {
+            throw $facebookResponse->getThrownException();
         }
 
-        return $returnResponse;
+        return $facebookResponse;
     }
 
     /**
