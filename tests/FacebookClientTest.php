@@ -34,11 +34,12 @@ use Facebook\FileUpload\FacebookVideo;
 use Facebook\HttpClients\FacebookCurlHttpClient;
 use Facebook\HttpClients\FacebookGuzzleHttpClient;
 use Facebook\HttpClients\FacebookStreamHttpClient;
-use Facebook\Tests\Fixtures\MyFooBatchClientHandler;
-use Facebook\Tests\Fixtures\MyFooClientHandler;
+use Facebook\Tests\Fixtures\MyFooBatchHttpClient;
+use Facebook\Tests\Fixtures\MyFooHttpClient;
 use Facebook\FacebookResponse;
 use Facebook\FacebookBatchResponse;
 use Facebook\GraphNodes\GraphNode;
+use Http\Client\HttpClient;
 
 class FacebookClientTest extends \PHPUnit_Framework_TestCase
 {
@@ -65,24 +66,24 @@ class FacebookClientTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->fbApp = new FacebookApp('id', 'shhhh!');
-        $this->fbClient = new FacebookClient(new MyFooClientHandler());
+        $this->fbClient = new FacebookClient(new MyFooHttpClient());
     }
 
     public function testACustomHttpClientCanBeInjected()
     {
-        $handler = new MyFooClientHandler();
+        $handler = new MyFooHttpClient();
         $client = new FacebookClient($handler);
-        $httpHandler = $client->getHttpClient();
+        $httpClient = $client->getHttpClient();
 
-        $this->assertInstanceOf(MyFooClientHandler::class, $httpHandler);
+        $this->assertInstanceOf(MyFooHttpClient::class, $httpClient);
     }
 
     public function testTheHttpClientWillFallbackToDefault()
     {
         $client = new FacebookClient();
-        $httpHandler = $client->getHttpClient();
+        $httpClient = $client->getHttpClient();
 
-        $this->assertInstanceOf('Http\Client\HttpClient', $httpHandler);
+        $this->assertInstanceOf(HttpClient::class, $httpClient);
     }
 
     public function testBetaModeCanBeDisabledOrEnabledViaConstructor()
@@ -138,7 +139,7 @@ class FacebookClientTest extends \PHPUnit_Framework_TestCase
         ];
         $fbBatchRequest = new FacebookBatchRequest($this->fbApp, $fbRequests);
 
-        $fbBatchClient = new FacebookClient(new MyFooBatchClientHandler());
+        $fbBatchClient = new FacebookClient(new MyFooBatchHttpClient());
         $response = $fbBatchClient->sendBatchRequest($fbBatchRequest);
 
         $this->assertInstanceOf(FacebookBatchResponse::class, $response);

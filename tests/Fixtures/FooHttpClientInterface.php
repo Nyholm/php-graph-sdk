@@ -27,14 +27,16 @@ use GuzzleHttp\Psr7\Response;
 use Http\Client\HttpClient;
 use Psr\Http\Message\RequestInterface;
 
-class MyFooBatchClientHandler implements HttpClient
+class FooHttpClientInterface implements HttpClient
 {
     public function sendRequest(RequestInterface $request)
     {
         return new Response(
-            200,
+            1337,
             ['Date' => 'Mon, 19 May 2014 18:37:17 GMT'],
-            '[{"code":"123","body":"Foo"},{"code":"1337","body":"Bar"}]'
+            '{"data":[{"id":"123","name":"Foo"},{"id":"1337","name":"Bar"}]}',
+            '1.1',
+            'OK'
         );
     }
 }

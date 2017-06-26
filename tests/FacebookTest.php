@@ -29,7 +29,7 @@ use Facebook\FacebookRequest;
 use Facebook\Authentication\AccessToken;
 use Facebook\GraphNodes\GraphEdge;
 use Facebook\Tests\Fixtures\FakeGraphApiForResumableUpload;
-use Facebook\Tests\Fixtures\FooClientInterface;
+use Facebook\Tests\Fixtures\FooHttpClientInterface;
 use Facebook\Tests\Fixtures\FooPersistentDataInterface;
 use Facebook\Tests\Fixtures\FooUrlDetectionInterface;
 use Facebook\HttpClients\FacebookCurlHttpClient;
@@ -206,14 +206,14 @@ class FacebookTest extends \PHPUnit_Framework_TestCase
     public function testCanInjectCustomHandlers()
     {
         $config = array_merge($this->config, [
-            'http_client' => new FooClientInterface(),
+            'http_client' => new FooHttpClientInterface(),
             'persistent_data_handler' => new FooPersistentDataInterface(),
             'url_detection_handler' => new FooUrlDetectionInterface(),
         ]);
         $fb = new Facebook($config);
 
         $this->assertInstanceOf(
-            FooClientInterface::class,
+            FooHttpClientInterface::class,
             $fb->getClient()->getHttpClient()
         );
         $this->assertInstanceOf(
@@ -229,7 +229,7 @@ class FacebookTest extends \PHPUnit_Framework_TestCase
     public function testPaginationReturnsProperResponse()
     {
         $config = array_merge($this->config, [
-            'http_client' => new FooClientInterface(),
+            'http_client' => new FooHttpClientInterface(),
         ]);
         $fb = new Facebook($config);
 

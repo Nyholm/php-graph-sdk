@@ -24,12 +24,7 @@ $myVideoFileToUpload = $fb->videoToUpload('/path/to/video-file.mp4'),
 
 Partial file uploads are possible using the `$maxLength` and `$offset` parameters which provide the same functionality as the `$maxlen` and `$offset` parameters on the [`stream_get_contents()` PHP function](http://php.net/stream_get_contents).
 
-%FB(devsite:markdown-wiki:info-card {
-  content: "Uploading videos may cause a timeout. Make sure to configure your HTTP client to increase timeout time before uploading videos.",
-  type: 'warning',
-})
-
-<card>
+> **Warning:** Uploading videos may cause a timeout. Make sure to configure your HTTP client to increase timeout time before uploading videos.
 
 ## Usage
 

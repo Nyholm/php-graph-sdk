@@ -27,7 +27,7 @@ use GuzzleHttp\Psr7\Response;
 use Http\Client\HttpClient;
 use Psr\Http\Message\RequestInterface;
 
-class MyFooClientHandler implements HttpClient
+class MyFooHttpClient implements HttpClient
 {
     public function sendRequest(RequestInterface $request)
     {
