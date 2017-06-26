@@ -193,8 +193,9 @@ class FacebookClient
 
         list($url, $method, $headers, $body) = $this->prepareRequestMessage($request);
 
-        $psr7Request = MessageFactoryDiscovery::find()->createRequest($method, $url, $headers, $body);
-        $psr7Response = $this->httpClient->sendRequest($psr7Request);
+        $psr7Response = $this->httpClient->sendRequest(
+            MessageFactoryDiscovery::find()->createRequest($method, $url, $headers, $body)
+        );
 
         static::$requestCount++;
 
